@@ -1,51 +1,49 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import css from '../PhonebookForm/PhonebookForm.module.css';
 
-class PhoneBookForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+const PhoneBookForm = ({ onSubmit }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = event => {
+  const handleChange = event => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    const { name, number } = this.state;
-    this.props.onSubmit(name, number);
-    this.setState({ name: '', number: '' });
+    onSubmit(name, number);
+    setName('');
+    setNumber('');
   };
 
-  render() {
-    const { name, number } = this.state;
-
-    return (
-      <form className={css.formField} onSubmit={this.handleSubmit}>
-        <input
-          className={css.fieldName}
-          type="text"
-          name="name"
-          required
-          value={name}
-          onChange={this.handleChange}
-          placeholder="Enter name"
-        />
-        <input
-          className={css.fieldNumber}
-          type="tel"
-          name="number"
-          required
-          value={number}
-          onChange={this.handleChange}
-          placeholder="Number"
-        />
-        <button type="submit">Add contact</button>
-      </form>
-    );
-  }
-}
+  return (
+    <form className={css.formField} onSubmit={handleSubmit}>
+      <input
+        className={css.fieldName}
+        type="text"
+        name="name"
+        required
+        value={name}
+        onChange={handleChange}
+        placeholder="Enter name"
+      />
+      <input
+        className={css.fieldNumber}
+        type="tel"
+        name="number"
+        required
+        value={number}
+        onChange={handleChange}
+        placeholder="Number"
+      />
+      <button type="submit">Add contact</button>
+    </form>
+  );
+};
 
 export default PhoneBookForm;
